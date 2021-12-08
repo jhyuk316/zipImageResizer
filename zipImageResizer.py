@@ -9,16 +9,13 @@ class ZipImageResizer:
     def __init__(self, sourceFile: str) -> None:
         self.imageExtList = [".jpg", ".jpeg", ".png", ".gif", ".bmp", ".tiff"]
         self.sourceFile = sourceFile
+        self.quality = 90
 
     def zipImageResize(self, height=1280):
-        print("self.sourceFile " + self.sourceFile)
+        print("sourceFile : " + self.sourceFile)
         sourceFilePath = os.path.dirname(self.sourceFile)
         sourceFileName = os.path.basename(self.sourceFile)
         sourceFileName, sourceFileExt = os.path.splitext(sourceFileName)
-
-        print(sourceFilePath)
-        print(sourceFileName)
-        print(sourceFileExt)
 
         destinationFile = "(resize)" + sourceFileName + sourceFileExt
         destinationFileName = "(resize)" + sourceFileName
@@ -46,8 +43,8 @@ class ZipImageResizer:
                 sourceFilePath + "\\" + destinationFile, "x"
             )
 
-            for file in sourceZip.namelist():
-                print(file)
+            for i, file in enumerate(sourceZip.namelist()):
+                print(f"{i+1:3} : {file}")
                 fileName, fileExt = os.path.splitext(file)
 
                 if fileExt in self.imageExtList:
@@ -64,7 +61,9 @@ class ZipImageResizer:
                         Image.LANCZOS,
                     )
                     img_byte_arr = io.BytesIO()
-                    img_resize.save(img_byte_arr, format=img.format)
+                    img_resize.save(
+                        img_byte_arr, format=img.format, quality=self.quality
+                    )
                     destinationZip.writestr(file, img_byte_arr.getvalue())
                 else:
                     dateTemp = sourceZip.read(file)
