@@ -18,18 +18,19 @@ def main(argv: List[str]):
     if len(argv) == 3 and argv[2].isdigit:
         targetHeight = int(argv[2])
 
-    zir = zipImageResizer.ZipImageResizer(targetFile)
+    try:
+        zir = zipImageResizer.ZipImageResizer(targetFile)
+        startTime = time.time()
+        zir.zipImageResize(targetHeight)
+        endTime = time.time()
 
-    startTime = time.time()
-    zir.zipImageResize(targetHeight)
-    endTime = time.time()
-
-    print(f"time : {endTime- startTime:.2f}s")
-
-    return 0
+        print(f"time : {endTime- startTime:.2f}s")
+        return 0
+    except ValueError as e:
+        print(e)
+        return -1
 
 
 if __name__ == "__main__":
     print("zipImageResizer\n")
-    # main(["test", r"C:\GitHub\zipImageResizer\sample\testImages.zip"])
     main(sys.argv)

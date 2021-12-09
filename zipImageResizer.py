@@ -11,6 +11,9 @@ class ZipImageResizer:
         self.sourceFile = sourceFile
         self.quality = 90
 
+        if not os.path.isfile(self.sourceFile):
+            raise ValueError("잘못된 경로 및 파일명.")
+
     def zipImageResize(self, height=1280):
         print("sourceFile : " + self.sourceFile)
         sourceFilePath = os.path.dirname(self.sourceFile)
